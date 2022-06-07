@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <pre id="message"></pre>
+    <script>
+        let ws = new WebSocket("ws://localhost:8001")
+
+        jsonObject = {
+                apiName: "this is an api name",
+                apiVersion: "this is a api version",
+                requestID: "102931ias",
+                messageType: "a message Type",
+                data: {
+                    "onmy": true,
+                    "ohboy": false
+                }
+            }
+
+        ws.onopen = (data) => {
+            console.log("connection successful")
+            console.log(data)
+        
+            ws.send(JSON.stringify(jsonObject))
+        }
+        ws.onclose = (data) => {
+            console.log("connection closed")
+            console.log(data)
+        }
+
+        ws.onerror = (data) => {
+            console.log("connection error")
+            console.log(data)
+        }
+
+        ws.onmessage = (data) => {
+            document.getElementById("message").textContent = JSON.stringify(JSON.parse(data.data), undefined, 4)
+        }
+
+    </script>
+</body>
+</html>
